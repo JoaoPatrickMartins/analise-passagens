@@ -31,4 +31,4 @@ for index, row in df.iterrows():
     valor = row.iloc[3]  # iloc[3] refere-se à quarta coluna
     data = row.iloc[0]  # iloc[0] refere-se à primeira coluna
     
-    print_valor(data, valor)
+    print_valor(data, valor)    
