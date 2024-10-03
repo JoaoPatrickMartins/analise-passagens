@@ -11,7 +11,7 @@ def print_valor(data, valor):
     print(f"Data: {data} - Valor: {valor}")
 
 # Caminho para o arquivo Excel
-caminho_arquivo = r'C:\Users\joaop\Joao Patrick\Trabalho\Digit Control\Program\analise-passagens\teste.xlsx'
+caminho_arquivo = r'C:\Users\joaop\Joao Patrick\Trabalho\Digit Control\Program\analise-passagens\entrada.xlsx'
 
 #inicio do programa
 print("Data e hora atual:", time.ctime())
@@ -57,6 +57,9 @@ df['Cancelamento válido'] = ''
 
 
 # iniciar acesso ao sistema
+print("Data e hora atual:", time.ctime())
+print("Iniciando acesso ao sistema...")
+
 # Pausar entre as ações para dar tempo ao sistema de responder
 pyautogui.PAUSE = 1
 
@@ -101,6 +104,7 @@ pyautogui.press('enter')
 # Adicione uma pausa para garantir que o sistema tenha tempo de responder
 # Ajustar para 30 segundos para garantir que o sistema tenha tempo de responder
 time.sleep(10)
+
 # Digitar o usuário
 pyautogui.write('T063971')
 
@@ -143,6 +147,13 @@ pyautogui.press('enter')
 # Ajustar pra 60 segundos para garantir que o sistema tenha tempo de responder
 time.sleep(30)
 
+# fim do processo de acesso ao sistema
+print("Data e hora atual:", time.ctime())
+print("Acesso ao sistema concluído com sucesso.")
+
+# gerar uma copia do dataframe
+df_copy = df.copy()
+
 try:
     # Varre a planilha linha a linha para validar a disponibilidade para cancelamento
     for index, row in df.iterrows():
@@ -160,7 +171,7 @@ try:
         pyautogui.write('n')
 
         # Adicione uma pausa para garantir que o sistema tenha tempo de responder
-        time.sleep(2)
+        time.sleep(1)
         # # Digitar 3 tabs para chegar no campo de localizador
         pyautogui.press('tab')
         pyautogui.press('tab')
@@ -188,33 +199,35 @@ try:
         pyperclip.copy('')
 
         # Adicione uma pausa para garantir que a área de transferência esteja limpa
-        time.sleep(1)
+        #time.sleep(1)
 
         # Copiar o texto selecionado para a área de transferência
         pyautogui.hotkey('ctrl', 'c')
 
         # Adicione uma pausa para garantir que o sistema tenha tempo de copiar o texto
-        time.sleep(1)
+        #time.sleep(1)
 
         # Obter o texto da área de transferência
         selected_text = pyperclip.paste()
 
         # Verificar se há texto selecionado
+        df.loc[index, 'Status'] = 'existente'
         if selected_text:
-            # adicionar status ao dataframe
-            df.loc[index, 'Status'] = 'inexistente'
+            df.drop(index, inplace=True)
+            df_copy.loc[index, 'Status'] = 'inexistente'
 
             # Pressionar F5 para fechar popup
             pyautogui.press('f5')
         else:
-            # adicionar status ao dataframe
             df.loc[index, 'Status'] = 'existente'
+            df_copy.loc[index, 'Status'] = 'existente'
+                
 
     # Print temporário do DataFrame
     # print(df)
 
     # Salvar o DataFrame em um novo arquivo Excel apenas com status
-    df.to_excel(r'C:\Users\joaop\Joao Patrick\Trabalho\Digit Control\Program\analise-passagens\resultado_nao_validado.xlsx', index=False)
+    df_copy.to_excel(r'C:\Users\joaop\Joao Patrick\Trabalho\Digit Control\Program\analise-passagens\resultado_nao_validado.xlsx', index=False)
 
     # Mensagem de conclusão da primeira parte
     print("Data e hora atual:", time.ctime())
@@ -225,7 +238,7 @@ except Exception as e:
 # iniciar validação de cancelamento
 # Adicione uma pausa para garantir que o sistema tenha tempo de responder
 # Ajustar para 30 segundos para garantir que o sistema tenha tempo de responder
-time.sleep(5)
+time.sleep(1)
 
 try:
     # Varre a planilha linha a linha para validar o cancelamento
@@ -244,7 +257,7 @@ try:
         pyautogui.write('b')
 
         # Adicione uma pausa para garantir que o sistema tenha tempo de responder
-        time.sleep(2)
+        time.sleep(1)
 
         # Digitar 2 tabs para chegar no campo de localizador
         pyautogui.press('tab')
@@ -258,6 +271,7 @@ try:
 
         # Calcular data de inicio e de fim
         data_inicio, data_fim = calcular_data_inicio_fim(data)
+
         # Digitar a data de início
         pyautogui.write(data_inicio)
 
@@ -282,7 +296,7 @@ try:
         pyautogui.press('f12')
 
         # Adicione uma pausa para garantir que o sistema tenha tempo de responder
-        time.sleep(5)
+        time.sleep(2)
 
         # Pressionar F5 para fechar popup
         pyautogui.press('f5')
@@ -298,13 +312,13 @@ try:
         pyperclip.copy('')
 
         # Adicione uma pausa para garantir que a área de transferência esteja limpa
-        time.sleep(1)
+        #time.sleep(1)
 
         # Copiar o texto selecionado para a área de transferência
         pyautogui.hotkey('ctrl', 'c')
 
         # Adicione uma pausa para garantir que o sistema tenha tempo de copiar o texto
-        time.sleep(1)
+        #time.sleep(1)
 
         # Obter o texto da área de transferência
         selected_text = pyperclip.paste()
