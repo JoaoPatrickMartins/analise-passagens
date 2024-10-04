@@ -4,7 +4,10 @@ from datetime import datetime, timedelta
 def calcular_data_inicio_fim(data_str):
   # Verificar se data_str é uma string e converter para datetime se necessário
   if isinstance(data_str, str):
-      data = datetime.strptime(data_str, '%d/%m/%Y %H:%M:%S')
+      try:
+          data = datetime.strptime(data_str, '%d/%m/%Y %H:%M:%S')
+      except ValueError:
+          data = datetime.strptime(data_str, '%Y-%m-%d %H:%M:%S')
   else:
       data = data_str
   
