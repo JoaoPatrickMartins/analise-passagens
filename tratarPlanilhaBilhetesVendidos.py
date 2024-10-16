@@ -33,20 +33,22 @@ def tratar_planilha_bilhetes_vendidos(caminho_arquivo):
   df['Status'] = ''
   df['Cancelamento válido'] = ''
 
+  # Remover todas as linhas vazias
+  df = df.dropna(how='all')
+
   # Tratamento da planilha de bilhetes vendidos finalizado 
   print("Data e hora atual:", time.ctime())
   print("Tratamento da planilha de bilhetes vendidos finalizado.")
 
-  #Varre a planilha linha a linha e obtém o valor da quarta coluna 
+  # Varre a planilha linha a linha e obtém o valor da quarta coluna 
   for index, row in df.iterrows():
     # Converter o campo da coluna 'Data Venda' para string
     df['Data Venda'] = df['Data Venda'].astype(str)
-    
-  #     form = row.iloc[2]
-  #     valor = row.iloc[3]  # iloc[3] refere-se à quarta coluna
-  #     data = row.iloc[0]  # iloc[0] refere-se à primeira coluna
 
-  #     localizador = form + valor
-  #     print_valor(data, localizador)
+    #converter o campo da coluna form para string
+    df['Form'] = df['Form'].astype(str)
+
+    #converter o campo da coluna valor para string
+    df['Nr. Doc'] = df['Nr. Doc'].astype(str)
 
   return df

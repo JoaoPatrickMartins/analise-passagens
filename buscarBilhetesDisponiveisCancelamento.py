@@ -10,7 +10,8 @@ def verificar_disponibilidade_cancelamento(df, df_copy):
             form = row.iloc[2]
             valor = row.iloc[3]  # iloc[3] refere-se à quarta coluna
             data = row.iloc[0]  # iloc[0] refere-se à primeira coluna
-
+            
+            print(f"Form: {form} - Valor: {valor} - Data: {data}")
             localizador = form + valor
 
             # Clicar na caixa (ajuste as coordenadas conforme necessário)
